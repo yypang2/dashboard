@@ -1,0 +1,91 @@
+/* General Reset and Body Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Styling */
+header {
+    background: linear-gradient(135deg, #800020, #b03060);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+header h1 {
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+/* Section Titles */
+section {
+    margin: 20px 5%;
+    padding: 10px 0;
+}
+section h2 {
+    font-size: 1.5rem;
+    color: #800020;
+    border-bottom: 2px solid #800020;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    font-weight: 700;
+}
+
+/* Dashboard Layout */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+/* Card Design */
+.card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+.card h3 {
+    font-size: 1.2rem;
+    background-color: #800020;
+    color: white;
+    padding: 15px;
+    margin: 0;
+}
+.card canvas {
+    padding: 15px;
+}
+.map {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f0f0f0, #d9d9d9);
+    color: #555;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+    .card h3 {
+        font-size: 1rem;
+        padding: 10px;
+    }
+}

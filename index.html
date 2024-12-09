@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Trends Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="styles.css">   
+</head>
+<body>
+    <header>
+        <h1>Price Trends Dashboard</h1>
+    </header>
+
+    <!-- Descriptive Section -->    
+    <section>
+        <h2>Descriptive Analytics</h2>
+        <div class="dashboard">
+            <div class="card">
+                <h3>Overall Price Trends</h3>
+                <canvas id="priceTrendChart"></canvas>
+            </div>
+            <div class="card">
+                <h3>Regional Supply Chain Costs</h3>
+                <div id="map" style="height: 300px;"></div>
+            </div>            
+        </div>
+    </section>
+    <script>
+        // Descriptive: Regional Supply Chain Costs (Map with Leaflet.js)
+        const map = L.map('map').setView([1.527, 103.745], 8); // Initial view (latitude, longitude, zoom level)
+    
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+    
+        L.marker([1.527, 103.745]).addTo(map)
+            .bindPopup('Highlight Area: Johor.')
+            .openPopup();        
+        </script>
+
+    <!-- Diagnostic Section -->
+    <section>
+        <h2>Diagnostic Analytics</h2>
+        <div class="dashboard">
+            <div class="card">
+                <h3>Event-Based Price Impacts</h3>
+                <canvas id="eventImpactChart"></canvas>
+            </div>
+            <div class="card">
+                <h3>Top Performing Products</h3>
+                <canvas id="topProductsChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Predictive Section -->
+    <section>
+        <h2>Predictive Analytics</h2>
+        <div class="dashboard">
+            <div class="card">
+                <h3>Economic Indicators</h3>
+                <canvas id="economicChart"></canvas>
+            </div>
+            <div class="card">
+                <h3>Forecasted Trends</h3>
+                <canvas id="forecastChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Descriptive: Overall Price Trends (Line Chart)
+        const priceTrendCtx = document.getElementById('priceTrendChart').getContext('2d');
+        new Chart(priceTrendCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Average Price',
+                    data: [120, 130, 125, 140, 135, 145, 150, 155, 160, 165, 170, 175],
+                    borderColor: '#800020',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: true } }
+            }
+        });
+
+        // Diagnostic: Event-Based Price Impacts (Bar Chart)
+        const eventImpactCtx = document.getElementById('eventImpactChart').getContext('2d');
+        new Chart(eventImpactCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Holiday', 'Flood', 'Festival', 'Pandemic'],
+                datasets: [{
+                    label: 'Price Impact (%)',
+                    data: [10, 15, 8, 20],
+                    backgroundColor: ['#800020', '#e67300', '#b3b300', '#0099cc']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: true } }
+            }
+        });
+
+        // Diagnostic: Top Performing Products (Pie Chart)
+        const topProductsCtx = document.getElementById('topProductsChart').getContext('2d');
+        new Chart(topProductsCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Product A', 'Product B', 'Product C', 'Product D'],
+                datasets: [{
+                    data: [35, 25, 20, 20],
+                    backgroundColor: ['#800020', '#e67300', '#b3b300', '#0099cc']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: true } }
+            }
+        });
+
+        // Predictive: Economic Indicators (Bar Chart)
+        const economicCtx = document.getElementById('economicChart').getContext('2d');
+        new Chart(economicCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Inflation', 'Currency', 'Fuel Prices'],
+                datasets: [{
+                    label: 'Impact (%)',
+                    data: [5, 10, 15],
+                    backgroundColor: ['#800020', '#e67300', '#b3b300']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: true } }
+            }
+        });
+
+        // Predictive: Forecasted Trends (Line Chart)
+        const forecastCtx = document.getElementById('forecastChart').getContext('2d');
+        new Chart(forecastCtx, {
+            type: 'line',
+            data: {
+                labels: ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'],
+                datasets: [{
+                    label: 'Forecasted Price',
+                    data: [170, 175, 180, 185, 190, 195],
+                    borderColor: '#800020',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: true } }
+            }
+        });
+    </script>
+</body>
+</html>
