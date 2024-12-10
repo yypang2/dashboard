@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Price Trends Dashboard</title>
+    <title>Harga Barang Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
@@ -11,159 +11,221 @@
     <link rel="stylesheet" href="styles.css">   
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <h1>Price Trends Dashboard</h1>
+        <h1>Harga Barang Dashboard</h1>
     </header>
 
-    <!-- Descriptive Section -->    
+    <!-- Highlight Section -->
+    <div class="dashboard">
+        <div class="highlight">Harga Barang Harian: RM 1,500</div>
+        <div class="highlight">Harga Barang Purata Bulanan: RM 3,500</div>
+        <div class="highlight">Kadar Inflasi: 3.8%</div>
+        <div class="highlight">Skor Kos Barang: 70/100</div>
+    </div>
+
+    <!-- Harga Barang Mengikut Kawasan Section -->
     <section>
-        <h2>Descriptive Analytics</h2>
+        <h2>Harga Barang Mengikut Kawasan</h2>
         <div class="dashboard">
+            <!-- Left: Map -->
+            <div id="map" class="map-container"></div>
+
+            <!-- Right: Visual Displays -->
             <div class="card">
-                <h3>Overall Price Trends</h3>
-                <canvas id="priceTrendChart"></canvas>
+                <canvas id="regionPricesChart"></canvas>
             </div>
             <div class="card">
-                <h3>Regional Supply Chain Costs</h3>
-                <div id="map" style="height: 300px;"></div>
-            </div>            
+                <canvas id="priceTrendChart"></canvas>
+            </div>
         </div>
     </section>
-    <script>
-        // Descriptive: Regional Supply Chain Costs (Map with Leaflet.js)
-        const map = L.map('map').setView([1.527, 103.745], 8); // Initial view (latitude, longitude, zoom level)
-    
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-    
-        L.marker([1.527, 103.745]).addTo(map)
-            .bindPopup('Highlight Area: Johor.')
-            .openPopup();        
-        </script>
 
-    <!-- Diagnostic Section -->
     <section>
-        <h2>Diagnostic Analytics</h2>
+        <h2>Diagnostik Harga Barang</h2>
         <div class="dashboard">
             <div class="card">
-                <h3>Event-Based Price Impacts</h3>
                 <canvas id="eventImpactChart"></canvas>
             </div>
             <div class="card">
-                <h3>Top Performing Products</h3>
                 <canvas id="topProductsChart"></canvas>
             </div>
         </div>
     </section>
 
-    <!-- Predictive Section -->
+    <!-- Forecast Section -->
     <section>
-        <h2>Predictive Analytics</h2>
+        <h2>Ramalan Harga Barang</h2>
         <div class="dashboard">
             <div class="card">
-                <h3>Economic Indicators</h3>
-                <canvas id="economicChart"></canvas>
-            </div>
-            <div class="card">
-                <h3>Forecasted Trends</h3>
                 <canvas id="forecastChart"></canvas>
             </div>
         </div>
     </section>
 
+    <!-- Scripts -->
     <script>
-        // Descriptive: Overall Price Trends (Line Chart)
+        // Initialize Leaflet Map
+        const map = L.map('map').setView([3.139, 101.6869], 8); // Centered at Kuala Lumpur, Malaysia
+
+        // Add OpenStreetMap Tile Layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add Markers with Popups for Different Regions
+        const bandarMarker = L.marker([3.139, 101.6869]).addTo(map);
+        bandarMarker.bindPopup('<b>Bandar</b><br>Harga Barang: RM2,000');
+
+        const pekanMarker = L.marker([2.197, 102.249]).addTo(map);
+        pekanMarker.bindPopup('<b>Pekan</b><br>Harga Barang: RM1,500');
+
+        const kampungMarker = L.marker([1.485, 103.761]).addTo(map);
+        kampungMarker.bindPopup('<b>Kampung</b><br>Harga Barang: RM1,200');
+
+        // Bar Chart for Region Prices
+        const regionPricesCtx = document.getElementById('regionPricesChart').getContext('2d');
+        new Chart(regionPricesCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Bandar', 'Pekan', 'Kampung'],
+                datasets: [{
+                    label: 'Harga Barang (RM)',
+                    data: [2000, 1500, 1200],
+                    backgroundColor: ['#800020', '#e67300', '#0099cc']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Line Chart for Price Trend
         const priceTrendCtx = document.getElementById('priceTrendChart').getContext('2d');
         new Chart(priceTrendCtx, {
             type: 'line',
             data: {
                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: 'Average Price',
-                    data: [120, 130, 125, 140, 135, 145, 150, 155, 160, 165, 170, 175],
-                    borderColor: '#800020',
-                    borderWidth: 2,
-                    fill: false
-                }]
+                datasets: [
+                    {
+                        label: 'Bandar',
+                        data: [2000, 2050, 2100, 2200, 2150, 2250, 2300, 2350, 2400, 2450, 2500, 2550],
+                        borderColor: '#800020',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Pekan',
+                        data: [1500, 1525, 1550, 1600, 1575, 1650, 1700, 1725, 1750, 1800, 1850, 1900],
+                        borderColor: '#e67300',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Kampung',
+                        data: [1200, 1220, 1250, 1275, 1300, 1325, 1350, 1375, 1400, 1425, 1450, 1475],
+                        borderColor: '#0099cc',
+                        borderWidth: 2,
+                        fill: false
+                    }
+                ]
             },
             options: {
                 responsive: true,
-                plugins: { legend: { display: true } }
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
             }
         });
 
-        // Diagnostic: Event-Based Price Impacts (Bar Chart)
+
+        // Bar Chart for Event-Based Price Impacts
         const eventImpactCtx = document.getElementById('eventImpactChart').getContext('2d');
         new Chart(eventImpactCtx, {
             type: 'bar',
             data: {
-                labels: ['Holiday', 'Flood', 'Festival', 'Pandemic'],
+                labels: ['Flood', 'Holiday', 'Festival', 'Pandemic'],
                 datasets: [{
                     label: 'Price Impact (%)',
-                    data: [10, 15, 8, 20],
+                    data: [15, 10, 20, 25],
                     backgroundColor: ['#800020', '#e67300', '#b3b300', '#0099cc']
                 }]
             },
             options: {
                 responsive: true,
-                plugins: { legend: { display: true } }
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
             }
         });
 
-        // Diagnostic: Top Performing Products (Pie Chart)
+        // Pie Chart for Top Performing Products
         const topProductsCtx = document.getElementById('topProductsChart').getContext('2d');
         new Chart(topProductsCtx, {
             type: 'pie',
             data: {
-                labels: ['Product A', 'Product B', 'Product C', 'Product D'],
+                labels: ['Food & Beverage', 'Electronics', 'Clothing', 'Household Goods'],
                 datasets: [{
-                    data: [35, 25, 20, 20],
+                    data: [40, 25, 20, 15],
                     backgroundColor: ['#800020', '#e67300', '#b3b300', '#0099cc']
                 }]
             },
             options: {
-                responsive: true,
-                plugins: { legend: { display: true } }
+                responsive: true
             }
         });
 
-        // Predictive: Economic Indicators (Bar Chart)
-        const economicCtx = document.getElementById('economicChart').getContext('2d');
-        new Chart(economicCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Inflation', 'Currency', 'Fuel Prices'],
-                datasets: [{
-                    label: 'Impact (%)',
-                    data: [5, 10, 15],
-                    backgroundColor: ['#800020', '#e67300', '#b3b300']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: true } }
-            }
-        });
-
-        // Predictive: Forecasted Trends (Line Chart)
+        // Forecast Chart
         const forecastCtx = document.getElementById('forecastChart').getContext('2d');
         new Chart(forecastCtx, {
             type: 'line',
             data: {
-                labels: ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'],
-                datasets: [{
-                    label: 'Forecasted Price',
-                    data: [170, 175, 180, 185, 190, 195],
-                    borderColor: '#800020',
-                    borderWidth: 2,
-                    fill: false
-                }]
+                labels: ['2023', '2024', '2025', '2026', '2027'],
+                datasets: [
+                    {
+                        label: 'Bandar',
+                        data: [3000, 3200, 3400, 3600, 3800],
+                        borderColor: '#800020',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Pekan',
+                        data: [2000, 2100, 2200, 2300, 2400],
+                        borderColor: '#e67300',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Kampung',
+                        data: [1500, 1550, 1600, 1650, 1700],
+                        borderColor: '#0099cc',
+                        borderWidth: 2,
+                        fill: false
+                    }
+                ]
             },
             options: {
                 responsive: true,
-                plugins: { legend: { display: true } }
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
             }
         });
     </script>
